@@ -3,13 +3,22 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\GenderEnum;
+use App\Enums\RoleEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\FilamentUser;
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +29,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'gender',
+        // 'role',
     ];
 
     /**
@@ -42,6 +53,31 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'gender' => GenderEnum::class,
+            // 'role' => RoleEnum::class,
         ];
+    }
+
+    // protected function fee(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn ($value) => $value / 100,
+    //         set: fn ($value) => $value * 100
+    //     );
+    // }
+
+    // public function modelHasRole()
+    // {
+    //     return $this->morphOne('App\Models\ModelHasRoles', 'model');
+    // }
+
+    public function clinics(): BelongsToMany
+    {
+        return $this->belongsToMany(Clinic::class, 'clinic_members')->withTimestamps();
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id');
     }
 }

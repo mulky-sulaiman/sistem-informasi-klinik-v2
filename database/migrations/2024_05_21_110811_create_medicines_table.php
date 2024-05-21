@@ -1,0 +1,37 @@
+<?php
+
+use App\Models\Clinic;
+use App\Models\MedicineCategory;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('medicines', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('clinic_id')->constrained();
+            $table->foreignId('medicine_category_id')->constrained();
+            $table->string('sku')->nullable();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->integer('stock')->default(0);
+            $table->integer('price')->default(0);
+            $table->boolean('is_in_stock')->default(false);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('medicines');
+    }
+};
