@@ -21,3 +21,5 @@ yarn-error.log
 /draft.yaml
 /.blueprint
 app/.DS_Store
+app/Filament/.DS_Store
+public/.DS_Store

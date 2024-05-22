@@ -9,13 +9,13 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Get;
+
 
 class UserResource extends Resource
 {
@@ -23,9 +23,6 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-user-cog';
 
-    protected static ?string $modelLabel = 'employee';
-    protected static ?string $pluralModelLabel = 'employees';
-    protected static ?int $navigationSort = 1;
     protected static ?string $navigationGroup = 'User Management';
 
     public static function form(Form $form): Form
@@ -42,12 +39,10 @@ class UserResource extends Resource
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
+                    ->revealable()
                     ->required()
-                    ->visibleOn('create')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(100),
+                    ->maxLength(255)
+                    ->visibleOn('create'),
                 Forms\Components\Select::make('gender')
                     ->options([
                         GenderEnum::MALE->value => GenderEnum::MALE->label(),
@@ -79,33 +74,17 @@ class UserResource extends Resource
             })
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('roles.name')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        RoleEnum::SUPER_ADMIN->value => 'danger',
-                        RoleEnum::ADMIN->value => 'gray',
-                        RoleEnum::OPERATOR->value => 'info',
-                        RoleEnum::PHARMACIST->value => 'warning',
-                        RoleEnum::DOCTOR->value => 'success',
-                    })
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('gender'),
+                Tables\Columns\TextColumn::make('roles.name'),
                 Tables\Columns\TextColumn::make('fee')
                     ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -119,12 +98,11 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -141,7 +119,6 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }

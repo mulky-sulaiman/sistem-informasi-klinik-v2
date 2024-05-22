@@ -5,12 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ClinicResource\Pages;
 use App\Filament\Resources\ClinicResource\RelationManagers;
 use App\Filament\Resources\ClinicResource\RelationManagers\MembersRelationManager;
+use App\Filament\Resources\ClinicResource\RelationManagers\UsersRelationManager;
 use App\Models\Clinic;
 use App\Models\District;
 use App\Models\Regency;
 use App\Models\Village;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -18,19 +20,17 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 
 class ClinicResource extends Resource
 {
     protected static ?string $model = Clinic::class;
 
-    protected static ?string $navigationIcon = 'tabler-building-hospital';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $modelLabel = 'clinic';
-    protected static ?string $pluralModelLabel = 'clinics';
-    // protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = 'Clinic Management';
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -104,20 +104,14 @@ class ClinicResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('address')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('province.name')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('regency.name')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('district.name')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('village.name')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -133,11 +127,10 @@ class ClinicResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

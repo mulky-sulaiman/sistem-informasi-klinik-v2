@@ -9,8 +9,6 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,11 +17,8 @@ class MedicineResource extends Resource
 {
     protected static ?string $model = Medicine::class;
 
-    protected static ?string $navigationIcon = 'tabler-pill';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $modelLabel = 'drug';
-    protected static ?string $pluralModelLabel = 'drugs';
-    protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = 'Clinic Management';
 
     public static function form(Form $form): Form
@@ -32,19 +27,19 @@ class MedicineResource extends Resource
             ->schema([
                 Forms\Components\Select::make('clinic_id')
                     ->relationship('clinic', 'name')
-                    ->searchable()
                     ->preload()
                     ->live()
+                    ->searchable()
                     ->required(),
                 Forms\Components\Select::make('medicine_category_id')
-                    ->relationship('medicine_category', 'name')
-                    ->searchable()
+                    ->relationship('category', 'name')
                     ->preload()
                     ->live()
+                    ->searchable()
                     ->required(),
-                Forms\Components\TextInput::make('sku')
-                    ->label('SKU')
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('sku')
+                //     ->label('SKU')
+                //     ->maxLength(255),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -60,6 +55,7 @@ class MedicineResource extends Resource
                     ->default(0)
                     ->prefix('$'),
                 Forms\Components\Toggle::make('is_in_stock')
+                    ->label('In stock')
                     ->required(),
             ]);
     }
@@ -71,7 +67,7 @@ class MedicineResource extends Resource
                 Tables\Columns\TextColumn::make('clinic.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('medicine_category.name')
+                Tables\Columns\TextColumn::make('category.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sku')
@@ -97,13 +93,9 @@ class MedicineResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('clinic')
-                    ->relationship('clinic', 'name'),
-                TernaryFilter::make('is_in_stock')
-                    ->label('In Stock?'),
+                //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -125,7 +117,6 @@ class MedicineResource extends Resource
         return [
             'index' => Pages\ListMedicines::route('/'),
             'create' => Pages\CreateMedicine::route('/create'),
-            'view' => Pages\ViewMedicine::route('/{record}'),
             'edit' => Pages\EditMedicine::route('/{record}/edit'),
         ];
     }

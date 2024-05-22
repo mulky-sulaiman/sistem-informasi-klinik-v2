@@ -66,11 +66,6 @@ class User extends Authenticatable
     //     );
     // }
 
-    // public function modelHasRole()
-    // {
-    //     return $this->morphOne('App\Models\ModelHasRoles', 'model');
-    // }
-
     public function clinics(): BelongsToMany
     {
         return $this->belongsToMany(Clinic::class, 'clinic_members')->withTimestamps();
@@ -79,5 +74,10 @@ class User extends Authenticatable
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class, 'doctor_id');
+    }
+
+    public function modelHasRole()
+    {
+        return $this->morphOne('App\Models\ModelHasRoles', 'model');
     }
 }

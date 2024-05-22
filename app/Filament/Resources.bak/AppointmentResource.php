@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\AppointmentStatusEnum;
 use App\Filament\Resources\AppointmentResource\Pages;
 use App\Filament\Resources\AppointmentResource\RelationManagers;
 use App\Models\Appointment;
@@ -18,12 +17,8 @@ class AppointmentResource extends Resource
 {
     protected static ?string $model = Appointment::class;
 
-    protected static ?string $navigationIcon = 'tabler-calendar-due';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $modelLabel = 'appointment';
-    protected static ?string $pluralModelLabel = 'appointments';
-    protected static ?int $navigationSort = 3;
-    protected static ?string $navigationGroup = 'Clinic Management';
     public static function form(Form $form): Form
     {
         return $form
@@ -86,41 +81,24 @@ class AppointmentResource extends Resource
                 Tables\Columns\TextColumn::make('schedule_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('symptoms')
-                    ->limit(20),
-                // Tables\Columns\TextColumn::make('height')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('weight')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('blood_pressure')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('doctor_fee')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('discount')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('amount')
-                //     ->numeric()
-                //     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->badge()
-                    // ->color(fn (string $state): string => match ($state) {
-                    //     AppointmentStatusEnum::SCHEDULED->value => 'gray',
-                    //     AppointmentStatusEnum::DIAGNOSED->value => 'warning',
-                    //     AppointmentStatusEnum::PREPARED->value => 'info',
-                    //     AppointmentStatusEnum::CONFIRMED->value => 'success',
-                    // })
+                Tables\Columns\TextColumn::make('height')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('weight')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('blood_pressure')
                     ->searchable(),
-                // ->color(fn (string $state): string => match ($state) {
-                //     RoleEnum::SUPER_ADMIN->value => 'danger',
-                //     RoleEnum::ADMIN->value => 'gray',
-                //     RoleEnum::OPERATOR->value => 'info',
-                //     RoleEnum::PHARMACIST->value => 'warning',
-                //     RoleEnum::DOCTOR->value => 'success',
-                // }),
+                Tables\Columns\TextColumn::make('doctor_fee')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('discount')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
