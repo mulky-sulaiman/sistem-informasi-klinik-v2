@@ -23,3 +23,5 @@ yarn-error.log
 app/.DS_Store
 app/Filament/.DS_Store
 public/.DS_Store
+app/Filament/Resources/.DS_Store
+app/Filament/Resources.bak/.DS_Store

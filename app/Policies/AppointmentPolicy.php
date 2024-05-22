@@ -41,7 +41,7 @@ class AppointmentPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -49,7 +49,7 @@ class AppointmentPolicy
      */
     public function update(User $user, Appointment $appointment): bool
     {
-        //
+        return true;
     }
 
     /**

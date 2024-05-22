@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\AppointmentStatusEnum;
 use App\Filament\Resources\AppointmentResource\Pages;
 use App\Filament\Resources\AppointmentResource\RelationManagers;
+use App\Filament\Resources\AppointmentResource\RelationManagers\TreatmentsRelationManager;
 use App\Models\Appointment;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -147,7 +148,7 @@ class AppointmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TreatmentsRelationManager::class,
         ];
     }
 

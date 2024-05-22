@@ -32,7 +32,7 @@ class TreatmentPolicy
      */
     public function view(User $user, Treatment $treatment): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -40,7 +40,7 @@ class TreatmentPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -48,7 +48,7 @@ class TreatmentPolicy
      */
     public function update(User $user, Treatment $treatment): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -56,7 +56,7 @@ class TreatmentPolicy
      */
     public function delete(User $user, Treatment $treatment): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -64,7 +64,7 @@ class TreatmentPolicy
      */
     public function restore(User $user, Treatment $treatment): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -72,6 +72,6 @@ class TreatmentPolicy
      */
     public function forceDelete(User $user, Treatment $treatment): bool
     {
-        //
+        return true;
     }
 }
